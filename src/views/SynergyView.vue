@@ -1,5 +1,6 @@
 <script>
 import * as d3 from "d3";
+import randomName from "node-random-name";
 export default {
   data() {
     return {
@@ -46,28 +47,44 @@ export default {
     handleChangeNewPersonName(event) {
       this.newPersonName = event.target.value;
     },
+    addPersonEntity(id, name, randomValues = false) {
+      const currentPersonsLength = this.persons.length;
+      this.persons = [...this.persons, { id, name }];
+      this.synergy = [
+        ...this.synergy.map((synergyItem) => ({
+          ...synergyItem,
+          values: [...synergyItem.values, { id, value: 0 }],
+        })),
+        {
+          id,
+          values: this.persons.map((person) => {
+            const max = Math.floor(100 / currentPersonsLength);
+            let value = 0;
+            if (randomValues) {
+              value = Math.floor(Math.random() * max);
+            } else {
+              value = max;
+            }
+            return { id: person.id, value: person.id !== id ? value : 0 };
+          }),
+        },
+      ];
+      this.$nextTick(() => {
+        this.renderChord();
+      });
+    },
+    addGeneratePerson() {
+      const id = new Date().getTime();
+      const name = randomName();
+      this.addPersonEntity(id, name, true);
+    },
     addNewPerson() {
       const id = new Date().getTime();
       const name = this.newPersonName;
       if (name.length > 0) {
         this.newPersonName = "";
-        this.persons = [...this.persons, { id, name }];
-        this.synergy = [
-          ...this.synergy.map((synergyItem) => ({
-            ...synergyItem,
-            values: [...synergyItem.values, { id, value: 0 }],
-          })),
-          {
-            id,
-            values: this.persons
-              .filter((person) => person.id !== id)
-              .map((person) => ({ id: person.id, value: 0 })),
-          },
-        ];
+        this.addPersonEntity(id, name);
         this.addMode = false;
-        this.$nextTick(() => {
-          this.renderChord();
-        });
       }
     },
     removePerson(id) {
@@ -112,7 +129,6 @@ export default {
           .find((synergyItem) => synergyItem.id === person.id)
           .values.map((synergyItemValue) => synergyItemValue.value);
       });
-      console.log("matrix", matrix);
 
       // give this matrix to d3.chord(): it will calculates all the info we need to draw arc and ribbon
       const res = d3
@@ -178,6 +194,7 @@ export default {
               </template>
               <template v-else>
                 <button @click="toggleAddPersonMode">[add]</button>
+                <button @click="addGeneratePerson">[generate]</button>
               </template>
             </li>
           </ul>
