@@ -1,15 +1,38 @@
 <script>
 import * as d3 from "d3";
 import randomName from "node-random-name";
+import randomColor from "randomcolor";
 export const SynergyView = {
   data() {
     return {
       addMode: false,
       newPersonName: "",
+      newPersonColor: "",
       persons: [
-        { id: 1, name: "John Doe" },
-        { id: 2, name: "Amanda Blue" },
-        { id: 3, name: "Lord Vader" },
+        {
+          id: 1,
+          name: "John Doe",
+          color: randomColor({
+            luminosity: "bright",
+            format: "rgb",
+          }),
+        },
+        {
+          id: 2,
+          name: "Amanda Blue",
+          color: randomColor({
+            luminosity: "bright",
+            format: "rgb",
+          }),
+        },
+        {
+          id: 3,
+          name: "Lord Vader",
+          color: randomColor({
+            luminosity: "bright",
+            format: "rgb",
+          }),
+        },
       ],
       synergyTest: 50,
       synergy: [
@@ -47,9 +70,12 @@ export const SynergyView = {
     handleChangeNewPersonName(event) {
       this.newPersonName = event.target.value;
     },
-    addPersonEntity(id, name, randomValues = false) {
+    handleChangeNewPersonColor(event) {
+      this.newPersonColor = event.target.value;
+    },
+    addPersonEntity(id, name, color, randomValues = false) {
       const currentPersonsLength = this.persons.length;
-      this.persons = [...this.persons, { id, name }];
+      this.persons = [...this.persons, { id, name, color }];
       this.synergy = [
         ...this.synergy.map((synergyItem) => ({
           ...synergyItem,
@@ -76,14 +102,20 @@ export const SynergyView = {
     addGeneratePerson() {
       const id = new Date().getTime();
       const name = randomName();
-      this.addPersonEntity(id, name, true);
+      const color = randomColor({
+        luminosity: "bright",
+        format: "rgb",
+      });
+      this.addPersonEntity(id, name, color, true);
     },
     addNewPerson() {
       const id = new Date().getTime();
       const name = this.newPersonName;
+      const color = this.newPersonColor;
       if (name.length > 0) {
         this.newPersonName = "";
-        this.addPersonEntity(id, name);
+        this.newPersonColor = "";
+        this.addPersonEntity(id, name, color);
         this.addMode = false;
       }
     },
@@ -130,6 +162,8 @@ export const SynergyView = {
           .values.map((synergyItemValue) => synergyItemValue.value);
       });
 
+      const colors = this.persons.map((person) => person.color || "red");
+
       // give this matrix to d3.chord(): it will calculates all the info we need to draw arc and ribbon
       const res = d3
         .chord()
@@ -147,6 +181,7 @@ export const SynergyView = {
         .enter()
         .append("g")
         .append("path")
+        .style("fill", (d, i) => colors[i])
         .style("fill", "grey")
         .style("stroke", "black")
         .attr("d", d3.arc().innerRadius(200).outerRadius(210));
@@ -160,7 +195,8 @@ export const SynergyView = {
         .enter()
         .append("path")
         .attr("d", d3.ribbon().radius(200))
-        .style("fill", "#69b3a2")
+        .style("fill", (d) => colors[d.source.index])
+        // .style("fill", "#69b3a2")
         .style("stroke", "black");
     },
   },
@@ -189,6 +225,11 @@ export default SynergyView;
                   @keydown.enter="addNewPerson"
                   v-model="newPersonName"
                   @input="handleChangeNewPersonName"
+                />
+                <input
+                  type="color"
+                  v-model="newPersonColor"
+                  @input="handleChangeNewPersonColor"
                 />
                 <button @click="addNewPerson">[+]</button>
                 <button @click="toggleAddPersonMode">[cancel]</button>
