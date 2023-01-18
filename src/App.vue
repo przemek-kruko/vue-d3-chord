@@ -164,16 +164,33 @@ export const SynergyView = {
       // create the svg area
       const svg = d3.select("#chord g");
 
-      const matrix = this.persons.map((person) => {
+      // const threshold = d3
+      //   .scaleThreshold()
+      //   .domain([1, 2, 10, 3])
+      //   .range([10, 20, 30, 40, 50]);
+
+      const data = this.persons.map((person) => {
         return this.synergy
           .find((synergyItem) => synergyItem.id === person.id)
-          .values.map((synergyItemValue) => synergyItemValue.value)
-          .map((synergyItemValueNumber) =>
-            synergyItemValueNumber >= this.visibilityThreshold
-              ? synergyItemValueNumber
-              : 0
-          );
+          .values.map((synergyItemValue) => synergyItemValue.value);
       });
+
+      const matrix = (data || []).reduce(
+        (current, currentValue, currentIndex) => {
+          const thresholdedIndexes = currentValue.map((value, i) => {
+            const keep = Boolean(value >= this.visibilityThreshold ? value : 0);
+            return { keep, i };
+          });
+          thresholdedIndexes.forEach(({ keep, i }) => {
+            if (!keep) {
+              current[i][currentIndex] = 0;
+            }
+          });
+
+          return current;
+        },
+        data
+      );
 
       const colors = this.persons.map((person) => person.color || "red");
 
@@ -208,7 +225,6 @@ export const SynergyView = {
         .append("path")
         .attr("d", d3.ribbon().radius(200))
         .style("fill", (d) => colors[d.source.index])
-        // .style("fill", "#69b3a2")
         .style("stroke", "black");
     },
   },
@@ -231,6 +247,8 @@ export default SynergyView;
               type="number"
               v-model="visibilityThreshold"
               @input="handleChangeVisibilityThreshold"
+              min="0"
+              max="100"
             />
           </div>
         </div>
@@ -239,6 +257,16 @@ export default SynergyView;
           <ul>
             <li v-for="person in persons" :key="person.id">
               {{ person.name }}
+              <div
+                :style="{
+                  display: 'inline-block',
+                  width: '2rem',
+                  height: '1rem',
+                  backgroundColor: person.color,
+                  border: '1px solid black',
+                  verticalAlign: 'middle',
+                }"
+              ></div>
               <button @click="() => removePerson(person.id)">[remove]</button>
             </li>
             <li>
@@ -269,7 +297,19 @@ export default SynergyView;
         <div>Synergy map:</div>
         <ul>
           <li v-for="person in persons" :key="person.id">
-            <div>{{ person.name }}:</div>
+            <div>
+              <span>{{ person.name }} </span>:
+              <div
+                :style="{
+                  display: 'inline-block',
+                  width: '2rem',
+                  height: '1rem',
+                  backgroundColor: person.color,
+                  border: '1px solid black',
+                  verticalAlign: 'middle',
+                }"
+              ></div>
+            </div>
             <ul>
               <li
                 v-for="person2 in persons.filter(
@@ -278,6 +318,16 @@ export default SynergyView;
                 :key="person2.id"
               >
                 <span>{{ person2.name }}</span>
+                <div
+                  :style="{
+                    display: 'inline-block',
+                    width: '2rem',
+                    height: '1rem',
+                    backgroundColor: person2.color,
+                    border: '1px solid black',
+                    verticalAlign: 'middle',
+                  }"
+                ></div>
                 <input
                   type="number"
                   step="1"
