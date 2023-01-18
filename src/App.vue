@@ -83,22 +83,20 @@ export const SynergyView = {
     },
     addPersonEntity(id, name, color, randomValues = false) {
       const currentPersonsLength = this.persons.length;
+      const max = Math.floor(100 / currentPersonsLength);
       this.persons = [...this.persons, { id, name, color }];
       this.synergy = [
         ...this.synergy.map((synergyItem) => ({
           ...synergyItem,
-          values: [...synergyItem.values, { id, value: 0 }],
+          values: [
+            ...synergyItem.values,
+            { id, value: randomValues ? Math.floor(Math.random() * max) : max },
+          ],
         })),
         {
           id,
           values: this.persons.map((person) => {
-            const max = Math.floor(100 / currentPersonsLength);
-            let value = 0;
-            if (randomValues) {
-              value = Math.floor(Math.random() * max);
-            } else {
-              value = max;
-            }
+            const value = randomValues ? Math.floor(Math.random() * max) : max;
             return { id: person.id, value: person.id !== id ? value : 0 };
           }),
         },
@@ -184,13 +182,18 @@ export const SynergyView = {
           thresholdedIndexes.forEach(({ keep, i }) => {
             if (!keep) {
               current[i][currentIndex] = 0;
+              current[currentIndex][i] = 0;
             }
           });
+
+          // console.log({ currentValue, currentIndex, thresholdedIndexes });
 
           return current;
         },
         data
       );
+
+      // console.log("matrix", matrix);
 
       const colors = this.persons.map((person) => person.color || "red");
 
