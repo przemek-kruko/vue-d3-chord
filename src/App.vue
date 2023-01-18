@@ -7,7 +7,7 @@ export const SynergyView = {
     return {
       addMode: false,
       newPersonName: "",
-      newPersonColor: "",
+      newPersonColor: "#000000",
       visibilityThreshold: 0,
       persons: [
         {
@@ -118,11 +118,13 @@ export const SynergyView = {
       const id = new Date().getTime();
       const name = this.newPersonName;
       const color = this.newPersonColor;
-      if (name.length > 0) {
-        this.newPersonName = "";
-        this.newPersonColor = "";
+      if (name.length > 0 && color.length > 0) {
         this.addPersonEntity(id, name, color);
-        this.addMode = false;
+        this.$nextTick(() => {
+          this.newPersonName = "";
+          this.newPersonColor = "#000000";
+          this.addMode = false;
+        });
       }
     },
     removePerson(id) {
