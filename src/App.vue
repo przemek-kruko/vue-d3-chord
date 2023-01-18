@@ -8,6 +8,7 @@ export const SynergyView = {
       addMode: false,
       newPersonName: "",
       newPersonColor: "",
+      visibilityThreshold: 0,
       persons: [
         {
           id: 1,
@@ -72,6 +73,13 @@ export const SynergyView = {
     },
     handleChangeNewPersonColor(event) {
       this.newPersonColor = event.target.value;
+    },
+    handleChangeVisibilityThreshold(event) {
+      const threshold = Number(event.target.value || 0);
+      this.visibilityThreshold = threshold;
+      this.$nextTick(() => {
+        this.renderChord();
+      });
     },
     addPersonEntity(id, name, color, randomValues = false) {
       const currentPersonsLength = this.persons.length;
@@ -159,7 +167,12 @@ export const SynergyView = {
       const matrix = this.persons.map((person) => {
         return this.synergy
           .find((synergyItem) => synergyItem.id === person.id)
-          .values.map((synergyItemValue) => synergyItemValue.value);
+          .values.map((synergyItemValue) => synergyItemValue.value)
+          .map((synergyItemValueNumber) =>
+            synergyItemValueNumber >= this.visibilityThreshold
+              ? synergyItemValueNumber
+              : 0
+          );
       });
 
       const colors = this.persons.map((person) => person.color || "red");
@@ -182,7 +195,6 @@ export const SynergyView = {
         .append("g")
         .append("path")
         .style("fill", (d, i) => colors[i])
-        .style("fill", "grey")
         .style("stroke", "black")
         .attr("d", d3.arc().innerRadius(200).outerRadius(210));
 
@@ -212,6 +224,17 @@ export default SynergyView;
     <div class="item">
       <div class="row">
         <div class="item">
+          <div>Options:</div>
+          <div>
+            Visibility threshold:
+            <input
+              type="number"
+              v-model="visibilityThreshold"
+              @input="handleChangeVisibilityThreshold"
+            />
+          </div>
+        </div>
+        <div class="item">
           <div>Persons:</div>
           <ul>
             <li v-for="person in persons" :key="person.id">
@@ -222,8 +245,8 @@ export default SynergyView;
               <template v-if="addMode">
                 <input
                   type="text"
-                  @keydown.enter="addNewPerson"
                   v-model="newPersonName"
+                  @keydown.enter="addNewPerson"
                   @input="handleChangeNewPersonName"
                 />
                 <input
