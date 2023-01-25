@@ -1,0 +1,170 @@
+{
+  "persons": [
+    {
+      "id": 3470608,
+      "first_name": "Sebastian",
+      "last_name": "Ramirez"
+    },
+    { "id": 3845525, "first_name": "Marie-Catherine", "last_name": "Therene" },
+    { "id": 3846849, "first_name": "Devellereau", "last_name": "Marie" },
+    { "id": 3862662, "first_name": "Alexis", "last_name": "Pendergrast" },
+    { "id": 3878161, "first_name": "Maedeh", "last_name": "Jameh Koui" },
+    { "id": 3913626, "first_name": "Gina", "last_name": "Renaux" },
+    { "id": 3946067, "first_name": "Carla", "last_name": "Villena" },
+    { "id": 4043530, "first_name": "Santos", "last_name": "Ajic" },
+    { "id": 3873458, "first_name": "Brigitte", "last_name": "Demouzon" },
+    { "id": 4013106, "first_name": "Jonathan", "last_name": "Hidalgo" }
+  ],
+  "synergy": [
+    {
+      "id": 3470608,
+      "synergy": [
+        { "id": 3470608, "result": null },
+        { "id": 3845525, "result": 79 },
+        { "id": 3846849, "result": 67 },
+        { "id": 3862662, "result": 39 },
+        { "id": 3878161, "result": 85 },
+        { "id": 3913626, "result": 52 },
+        { "id": 3946067, "result": 58 },
+        { "id": 4043530, "result": 70 },
+        { "id": 3873458, "result": 76 },
+        { "id": 4013106, "result": 70 }
+      ]
+    },
+    {
+      "id": 3845525,
+      "synergy": [
+        { "id": 3470608, "result": 79 },
+        { "id": 3845525, "result": null },
+        { "id": 3846849, "result": 73 },
+        { "id": 3862662, "result": 58 },
+        { "id": 3878161, "result": 79 },
+        { "id": 3913626, "result": 70 },
+        { "id": 3946067, "result": 88 },
+        { "id": 4043530, "result": 70 },
+        { "id": 3873458, "result": 70 },
+        { "id": 4013106, "result": 82 }
+      ]
+    },
+    {
+      "id": 3846849,
+      "synergy": [
+        { "id": 3470608, "result": 67 },
+        { "id": 3845525, "result": 73 },
+        { "id": 3846849, "result": null },
+        { "id": 3862662, "result": 88 },
+        { "id": 3878161, "result": 73 },
+        { "id": 3913626, "result": 76 },
+        { "id": 3946067, "result": 76 },
+        { "id": 4043530, "result": 70 },
+        { "id": 3873458, "result": 52 },
+        { "id": 4013106, "result": 76 }
+      ]
+    },
+    {
+      "id": 3862662,
+      "synergy": [
+        { "id": 3470608, "result": 39 },
+        { "id": 3845525, "result": 58 },
+        { "id": 3846849, "result": 88 },
+        { "id": 3862662, "result": null },
+        { "id": 3878161, "result": 70 },
+        { "id": 3913626, "result": 73 },
+        { "id": 3946067, "result": 61 },
+        { "id": 4043530, "result": 73 },
+        { "id": 3873458, "result": 73 },
+        { "id": 4013106, "result": 85 }
+      ]
+    },
+    {
+      "id": 3878161,
+      "synergy": [
+        { "id": 3470608, "result": 85 },
+        { "id": 3845525, "result": 79 },
+        { "id": 3846849, "result": 73 },
+        { "id": 3862662, "result": 70 },
+        { "id": 3878161, "result": null },
+        { "id": 3913626, "result": 82 },
+        { "id": 3946067, "result": 82 },
+        { "id": 4043530, "result": 70 },
+        { "id": 3873458, "result": 76 },
+        { "id": 4013106, "result": 88 }
+      ]
+    },
+    {
+      "id": 3913626,
+      "synergy": [
+        { "id": 3470608, "result": 52 },
+        { "id": 3845525, "result": 70 },
+        { "id": 3846849, "result": 76 },
+        { "id": 3862662, "result": 73 },
+        { "id": 3878161, "result": 82 },
+        { "id": 3913626, "result": null },
+        { "id": 3946067, "result": 79 },
+        { "id": 4043530, "result": 73 },
+        { "id": 3873458, "result": 55 },
+        { "id": 4013106, "result": 73 }
+      ]
+    },
+    {
+      "id": 3946067,
+      "synergy": [
+        { "id": 3470608, "result": 58 },
+        { "id": 3845525, "result": 88 },
+        { "id": 3846849, "result": 76 },
+        { "id": 3862662, "result": 61 },
+        { "id": 3878161, "result": 82 },
+        { "id": 3913626, "result": 79 },
+        { "id": 3946067, "result": null },
+        { "id": 4043530, "result": 73 },
+        { "id": 3873458, "result": 67 },
+        { "id": 4013106, "result": 85 }
+      ]
+    },
+    {
+      "id": 4043530,
+      "synergy": [
+        { "id": 3470608, "result": 70 },
+        { "id": 3845525, "result": 70 },
+        { "id": 3846849, "result": 70 },
+        { "id": 3862662, "result": 73 },
+        { "id": 3878161, "result": 70 },
+        { "id": 3913626, "result": 73 },
+        { "id": 3946067, "result": 73 },
+        { "id": 4043530, "result": null },
+        { "id": 3873458, "result": 67 },
+        { "id": 4013106, "result": 79 }
+      ]
+    },
+    {
+      "id": 3873458,
+      "synergy": [
+        { "id": 3470608, "result": 76 },
+        { "id": 3845525, "result": 70 },
+        { "id": 3846849, "result": 52 },
+        { "id": 3862662, "result": 73 },
+        { "id": 3878161, "result": 76 },
+        { "id": 3913626, "result": 55 },
+        { "id": 3946067, "result": 67 },
+        { "id": 4043530, "result": 67 },
+        { "id": 3873458, "result": null },
+        { "id": 4013106, "result": 73 }
+      ]
+    },
+    {
+      "id": 4013106,
+      "synergy": [
+        { "id": 3470608, "result": 70 },
+        { "id": 3845525, "result": 82 },
+        { "id": 3846849, "result": 76 },
+        { "id": 3862662, "result": 85 },
+        { "id": 3878161, "result": 88 },
+        { "id": 3913626, "result": 73 },
+        { "id": 3946067, "result": 85 },
+        { "id": 4043530, "result": 79 },
+        { "id": 3873458, "result": 73 },
+        { "id": 4013106, "result": null }
+      ]
+    }
+  ]
+}

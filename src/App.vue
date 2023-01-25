@@ -1,7 +1,9 @@
 <script>
 import * as d3 from "d3";
 import randomName from "node-random-name";
-import randomColor from "randomcolor";
+import seedColor from "seed-color";
+import data from "./data/example.json";
+
 export const SynergyView = {
   data() {
     return {
@@ -10,61 +12,31 @@ export const SynergyView = {
       newPersonColor: "#000000",
       visibilityThreshold: 0,
       persons: [
-        {
-          id: 1,
-          name: "John Doe",
-          color: randomColor({
-            luminosity: "bright",
-            format: "rgb",
-          }),
-        },
-        {
-          id: 2,
-          name: "Amanda Blue",
-          color: randomColor({
-            luminosity: "bright",
-            format: "rgb",
-          }),
-        },
-        {
-          id: 3,
-          name: "Lord Vader",
-          color: randomColor({
-            luminosity: "bright",
-            format: "rgb",
-          }),
-        },
+        ...data.persons.map((item) => {
+          const name = `${item.first_name} ${item.last_name}`;
+          return {
+            id: item.id,
+            name,
+            color: this.randomColor(name),
+          };
+        }),
       ],
       synergyTest: 50,
       synergy: [
-        {
-          id: 1,
-          values: [
-            { id: 1, value: 0 },
-            { id: 2, value: 45 },
-            { id: 3, value: 55 },
-          ],
-        },
-        {
-          id: 2,
-          values: [
-            { id: 1, value: 66 },
-            { id: 2, value: 0 },
-            { id: 3, value: 34 },
-          ],
-        },
-        {
-          id: 3,
-          values: [
-            { id: 1, value: 10 },
-            { id: 2, value: 90 },
-            { id: 3, value: 0 },
-          ],
-        },
+        ...data.synergy.map((item) => ({
+          id: item.id,
+          values: item.synergy.map((subitem) => ({
+            id: subitem.id,
+            value: subitem.result || 0,
+          })),
+        })),
       ],
     };
   },
   methods: {
+    randomColor(id) {
+      return seedColor(id).toHex();
+    },
     toggleAddPersonMode() {
       this.addMode = !this.addMode;
     },
@@ -82,8 +54,7 @@ export const SynergyView = {
       });
     },
     addPersonEntity(id, name, color, randomValues = false) {
-      const currentPersonsLength = this.persons.length;
-      const max = Math.floor(100 / currentPersonsLength);
+      const max = 100;
       this.persons = [...this.persons, { id, name, color }];
       this.synergy = [
         ...this.synergy.map((synergyItem) => ({
@@ -108,10 +79,7 @@ export const SynergyView = {
     addGeneratePerson() {
       const id = new Date().getTime();
       const name = randomName();
-      const color = randomColor({
-        luminosity: "bright",
-        format: "rgb",
-      });
+      const color = this.randomColor(id);
       this.addPersonEntity(id, name, color, true);
     },
     addNewPerson() {
@@ -163,11 +131,6 @@ export const SynergyView = {
     renderChord() {
       // create the svg area
       const svg = d3.select("#chord g");
-
-      // const threshold = d3
-      //   .scaleThreshold()
-      //   .domain([1, 2, 10, 3])
-      //   .range([10, 20, 30, 40, 50]);
 
       const data = this.persons.map((person) => {
         return this.synergy
